@@ -1,38 +1,57 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.position {
   display: flex;
-  flex-direction: column;
+}
+.carousel-ui {
+  width: 300px;
+}
+.contentStyle {
+  margin: 0;
+  height: 350px;
+  color: #fff;
+  line-height: 160px;
+  text-align: center;
+  background: #364d79;
+}
+
+.ant-carousel .slick-prev,
+.ant-carousel .slick-prev:hover,
+.ant-carousel .slick-prev:focus {
+  font-size: inherit;
+  left: 10px;
+  z-index: 2;
+  color: #000;
+}
+
+.ant-carousel .slick-next,
+.ant-carousel .slick-next:hover,
+.ant-carousel .slick-next:focus {
+  font-size: inherit;
+  right: 10px;
+  z-index: 2;
+  color: #000;
+}
+
+.refills {
+  margin-top: -25px;
+  margin-left: 50px;
+  width: 100%;
+}
+
+.key-value-pair {
+  display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+  margin-bottom: 30px;
+  .key {
+    font-weight: bold;
+    flex: 1;
+    text-align: left;
   }
-  to {
-    transform: rotate(360deg);
+  .dot {
+    margin: 0 5px;
+  }
+  .value {
+    flex: 1;
+    text-align: left;
+    margin-left: 180px;
   }
 }
