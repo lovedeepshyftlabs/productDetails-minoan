@@ -1,10 +1,13 @@
-import { useState, useEffect} from "react";
-import { Carousel, Table, Divider } from "antd";
+import { useState, useEffect } from "react";
+import { Carousel, Table, Divider, Flex, Spin } from "antd";
 import { LeftCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
 import HTMLReactParser from "html-react-parser";
-import axios from 'axios'
+import axios from "axios";
 const ProductDetails = (props) => {
   const { product_id, store_sync_id } = props;
+  const [dataSource, setDataSource] = useState();
+  const [loading, setLoading] = useState(true);
+
   const columns = [
     {
       title: "Title",
@@ -23,17 +26,24 @@ const ProductDetails = (props) => {
     },
   ];
 
-  const [dataSource, setDataSource] = useState();
   useEffect(() => {
     const fetchData = async () => {
-        const response = await axios.post('https://dev-shopify-api.minoanexperience.com/bulksync/getProductDetails',{
-            "product_id": product_id,
-            "store_sync_id": store_sync_id
-        });
+      try {
+        const response = await axios.post(
+          "https://dev-shopify-api.minoanexperience.com/bulksync/getProductDetails",
+          {
+            product_id: product_id,
+            store_sync_id: store_sync_id,
+          }
+        );
         setDataSource(response?.data);
+        setLoading(false);
+      } catch (error) {
+        console.log(error.message);
+      }
     };
     fetchData();
-  }, [])
+  }, [product_id, store_sync_id]);
 
   const tableData = dataSource?.variants?.map((variant) => ({
     key: variant?.id,
@@ -41,6 +51,16 @@ const ProductDetails = (props) => {
     sku: variant?.sku,
     quantity: variant?.inventory_quantity,
   }));
+
+  if (loading) {
+    return (
+      <div style={{ marginLeft: "250px", width: "80%" }}>
+        <Flex style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <Spin style={{marginTop: "380px"}} size="large" />
+        </Flex>
+      </div>
+    );
+  }
   return (
     <>
       <div style={{ marginLeft: "250px", width: "80%" }}>
@@ -57,7 +77,11 @@ const ProductDetails = (props) => {
             >
               {dataSource?.images.map((image) => (
                 <div key={image.id}>
-                  <img src={image.src} alt={`image with ${image?.id}`} className="contentStyle"></img>
+                  <img
+                    src={image.src}
+                    alt={`image with ${image?.id}`}
+                    className="contentStyle"
+                  ></img>
                 </div>
               ))}
             </Carousel>
@@ -89,17 +113,19 @@ const ProductDetails = (props) => {
             <Divider />
             <div>
               <h1>Description</h1>
-              {typeof dataSource?.body_html === 'string' ? HTMLReactParser(dataSource.body_html.toString()) : null}
+              {typeof dataSource?.body_html === "string"
+                ? HTMLReactParser(dataSource.body_html.toString())
+                : null}
             </div>
             <Divider />
             <div>
               <h1>Variants</h1>
-                <Table
-                  dataSource={tableData}
-                  columns={columns}
-                  pagination={false}
-                  scroll={{ x: true }}
-                />
+              <Table
+                dataSource={tableData}
+                columns={columns}
+                pagination={false}
+                scroll={{ x: true }}
+              />
             </div>
           </div>
         </div>
