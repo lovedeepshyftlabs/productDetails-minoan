@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
-import { Carousel, Table, Divider, Flex, Spin } from "antd";
+import { Carousel, Table, Divider, Flex, Spin, Result, Button } from "antd";
 import { LeftCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
 import HTMLReactParser from "html-react-parser";
 import axios from "axios";
 const ProductDetails = (props) => {
-  const { product_id, store_sync_id } = props;
+  const { product_id, store_sync_id, setOpen } = props;
   const [dataSource, setDataSource] = useState();
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+  const url = "https://dev-shopify-api.minoanexperience.com/bulksync/getProductDetails";
 
   const columns = [
     {
@@ -30,16 +32,18 @@ const ProductDetails = (props) => {
     const fetchData = async () => {
       try {
         const response = await axios.post(
-          "https://dev-shopify-api.minoanexperience.com/bulksync/getProductDetails",
+          url,
           {
             product_id: product_id,
             store_sync_id: store_sync_id,
           }
         );
         setDataSource(response?.data);
-        setLoading(false);
       } catch (error) {
-        console.log(error.message);
+        console.log(error?.response?.status);
+        setError(error?.response?.status);
+      } finally {
+        setLoading(false);
       }
     };
     fetchData();
@@ -52,22 +56,32 @@ const ProductDetails = (props) => {
     quantity: variant?.inventory_quantity,
   }));
 
+  const handleNavigation = () => {
+    setOpen(false);
+  }
+
   if (loading) {
     return (
-      <div style={{ marginLeft: "250px", width: "80%" }}>
-        <Flex style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
-          <Spin style={{marginTop: "380px"}} size="large" />
+      <div>
+        <Flex style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "250px"}}>
+          <Spin size="large" />
         </Flex>
       </div>
     );
   }
+  if(error) {
+    return (
+        <Result
+            status={error}
+            title={error}
+            subTitle="Sorry, the page you visited does not exist."
+            extra={<Button type="primary" onClick={handleNavigation}>Back Home</Button>}
+        />
+    )
+  }
   return (
     <>
-      <div style={{ marginLeft: "250px", width: "80%" }}>
-        <div>
-          <h1>Product details </h1>
-        </div>
-        <Divider />
+      <div>
         <div className="position">
           <div className="carousel-ui">
             <Carousel
