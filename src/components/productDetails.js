@@ -1,6 +1,6 @@
 import React from "react";
 import { Carousel, Tag, Table, Divider } from "antd";
-import { LeftCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
+import { LeftCircleOutlined, RightCircleOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 import parse from "html-react-parser";
 const productDetails = (props) => {
   const { id } = props;
@@ -16,7 +16,11 @@ const productDetails = (props) => {
       key: "sku",
     },
     {
-      title: "Quantity",
+      title: (
+        <span>
+            Quantity <QuestionCircleOutlined />
+        </span>
+      ),
       dataIndex: "quantity",
       key: "quantity",
     },
@@ -243,12 +247,12 @@ const productDetails = (props) => {
             <Divider />
             <div>
               <h1>Variants</h1>
-                <Table
-                  dataSource={data}
-                  columns={columns}
-                  pagination={false}
-                  scroll={{ x: true }}
-                />
+              <Table
+                dataSource={data}
+                columns={columns}
+                pagination={false}
+                scroll={{ x: true }}
+              />
             </div>
           </div>
         </div>
