@@ -1,6 +1,6 @@
 import React from "react";
 import { Carousel, Tag, Table, Divider } from "antd";
-import { LeftCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
+import { LeftCircleOutlined, RightCircleOutlined, QuestionCircleOutlined } from "@ant-design/icons";
 const productDetails = () => {
   const columns = [
     {
@@ -14,7 +14,11 @@ const productDetails = () => {
       key: "sku",
     },
     {
-      title: "Quantity",
+      title: (
+        <span>
+            Quantity <QuestionCircleOutlined />
+        </span>
+      ),
       dataIndex: "quantity",
       key: "quantity",
     },
@@ -32,7 +36,7 @@ const productDetails = () => {
     <>
       <div style={{ marginLeft: "250px", width: "80%"}}>
         <div>
-        <h1>Product details </h1>
+          <h1>Product details </h1>
         </div>
         <Divider />
         <div className="position">
@@ -91,14 +95,12 @@ const productDetails = () => {
             <Divider />
             <div>
               <h1>Variants</h1>
-              <div style={{ display: "inline-block", width: "100%" }}>
-                <Table
-                  dataSource={data}
-                  columns={columns}
-                  pagination={false} 
-                  scroll={{ x: true }}
-                />
-              </div>
+              <Table
+                dataSource={data}
+                columns={columns}
+                pagination={false}
+                scroll={{ x: true }}
+              />
             </div>
           </div>
         </div>
