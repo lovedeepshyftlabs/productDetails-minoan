@@ -1,9 +1,8 @@
 import './App.css';
 import ProductDetails from './components/productDetails';
-
 function App() {
   return (
-    <ProductDetails/>
+    <ProductDetails product_id="8268418646255" store_sync_id="356555257157305024" />
   );
 }
 
