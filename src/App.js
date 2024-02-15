@@ -1,16 +1,25 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ProductDetails from "./components/productDetails";
 import { Button, Drawer } from "antd";
 
 function App() {
   const [open, setOpen] = useState(false);
+  const [productId, setProductId] = useState(null);
+  const [storeId, setStoreId] = useState(null);
+
   const showDrawer = () => {
-    setOpen(true);
+    setProductId("8268418646255");
+    setStoreId("356555257157305024");
   };
   const onClose = () => {
     setOpen(false);
   };
+  useEffect(() => {
+    if(productId && storeId) {
+      setOpen(true);
+    }
+  })
   return (
     <>
       <Button type="primary" onClick={showDrawer}>
@@ -23,7 +32,7 @@ function App() {
         onClose={onClose}
         open={open}
       >
-        <ProductDetails product_id="8268418646255" store_sync_id="356555257157305024" setOpen={setOpen}/>
+        <ProductDetails product_id={productId} store_sync_id={storeId} setProductId={setProductId} setStoreId={setStoreId}/>
       </Drawer>
     </>
   );

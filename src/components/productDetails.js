@@ -4,7 +4,7 @@ import { LeftCircleOutlined, RightCircleOutlined } from "@ant-design/icons";
 import HTMLReactParser from "html-react-parser";
 import axios from "axios";
 const ProductDetails = (props) => {
-  const { product_id, store_sync_id, setOpen } = props;
+  const { product_id, store_sync_id, setProductId, setStoreId} = props;
   const [dataSource, setDataSource] = useState();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
@@ -28,7 +28,13 @@ const ProductDetails = (props) => {
     },
   ];
 
+  const resetState = () => {
+    setProductId(null);
+    setStoreId(null);
+  }
+
   useEffect(() => {
+    if(product_id && store_sync_id) {
     const fetchData = async () => {
       try {
         const response = await axios.post(
@@ -47,6 +53,8 @@ const ProductDetails = (props) => {
       }
     };
     fetchData();
+    resetState();
+  }
   }, [product_id, store_sync_id]);
 
   const tableData = dataSource?.variants?.map((variant) => ({
@@ -55,10 +63,6 @@ const ProductDetails = (props) => {
     sku: variant?.sku,
     quantity: variant?.inventory_quantity,
   }));
-
-  const handleNavigation = () => {
-    setOpen(false);
-  }
 
   if (loading) {
     return (
@@ -75,7 +79,7 @@ const ProductDetails = (props) => {
             status={error}
             title={error}
             subTitle="Sorry, the page you visited does not exist."
-            extra={<Button type="primary" onClick={handleNavigation}>Back Home</Button>}
+            extra={<Button type="primary" onClick={resetState}>Back Home</Button>}
         />
     )
   }
