@@ -28,7 +28,13 @@ const ProductDetails = (props) => {
     },
   ];
 
+  const resetState = () => {
+    setProductId(null);
+    setStoreId(null);
+  }
+
   useEffect(() => {
+    if(product_id && store_sync_id) {
     const fetchData = async () => {
       try {
         const response = await axios.post(
